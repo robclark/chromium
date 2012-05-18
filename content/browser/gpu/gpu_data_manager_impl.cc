@@ -93,7 +93,6 @@ void GpuDataManagerImpl::UpdateGpuInfo(const content::GPUInfo& gpu_info) {
     if (gpu_info.gpu.vendor_id && gpu_info.gpu.device_id) {
       gpu_info_ = gpu_info;
     } else {
-      gpu_info_.gpu_accessible = false;
       gpu_info_.finalized = true;
     }
     complete_gpu_info_available_ =
