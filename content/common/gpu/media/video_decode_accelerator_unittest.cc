@@ -657,9 +657,8 @@ void EglRenderingVDAClient::CreateDecoder() {
   scoped_refptr<DXVAVideoDecodeAccelerator> decoder =
       new DXVAVideoDecodeAccelerator(this);
 #else  // OS_WIN
-  scoped_refptr<OmxVideoDecodeAccelerator> decoder =
-      new OmxVideoDecodeAccelerator(this);
-  decoder->SetEglState(egl_display(), egl_context());
+  scoped_refptr<ExtVideoDecodeAccelerator> decoder =
+      new ExtVideoDecodeAccelerator(this, egl_display(), egl_context());
 #endif  // OS_WIN
   decoder_ = decoder.release();
   SetState(CS_DECODER_SET);

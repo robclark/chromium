@@ -25,7 +25,7 @@
 #if defined(OS_WIN)
 #include "content/common/gpu/media/dxva_video_decode_accelerator.h"
 #else  // OS_WIN
-#include "content/common/gpu/media/omx_video_decode_accelerator.h"
+#include "content/common/gpu/media/ext_video_decode_accelerator.h"
 #endif  // OS_WIN
 #include "ui/gl/gl_context.h"
 #include "ui/gl/gl_surface_egl.h"
@@ -134,9 +134,8 @@ void GpuVideoDecodeAccelerator::Initialize(
   DXVAVideoDecodeAccelerator* video_decoder =
       new DXVAVideoDecodeAccelerator(this);
 #else  // OS_WIN
-  OmxVideoDecodeAccelerator* video_decoder =
-      new OmxVideoDecodeAccelerator(this);
-  video_decoder->SetEglState(
+  ExtVideoDecodeAccelerator* video_decoder =
+      new ExtVideoDecodeAccelerator(this,
       gfx::GLSurfaceEGL::GetHardwareDisplay(),
       stub_->decoder()->GetGLContext()->GetHandle());
 #endif  // OS_WIN
