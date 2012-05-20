@@ -378,8 +378,9 @@ void GpuVideoDecoder::PictureReady(const media::Picture& picture) {
 
   DCHECK(decoder_texture_target_);
   scoped_refptr<VideoFrame> frame(VideoFrame::WrapNativeTexture(
-      pb.texture_id(), decoder_texture_target_, pb.size().width(),
-      pb.size().height(), timestamp, duration,
+      pb.texture_id(), decoder_texture_target_,
+      picture.crop_x(), picture.crop_y(), picture.crop_w(), picture.crop_h(),
+      pb.size().width(), pb.size().height(), timestamp, duration,
       base::Bind(&GpuVideoDecoder::ReusePictureBuffer, this,
                  picture.picture_buffer_id())));
 

@@ -51,6 +51,10 @@ bool VideoFrame::IsValidConfig(
 scoped_refptr<VideoFrame> VideoFrame::WrapNativeTexture(
     uint32 texture_id,
     uint32 texture_target,
+    size_t crop_x,
+    size_t crop_y,
+    size_t crop_w,
+    size_t crop_h,
     size_t width,
     size_t height,
     base::TimeDelta timestamp,
@@ -134,11 +138,39 @@ void VideoFrame::AllocateYUV() {
 }
 
 VideoFrame::VideoFrame(VideoFrame::Format format,
+                       size_t crop_x,
+                       size_t crop_y,
+                       size_t crop_w,
+                       size_t crop_h,
                        size_t width,
                        size_t height,
                        base::TimeDelta timestamp,
                        base::TimeDelta duration)
     : format_(format),
+      crop_x_(crop_x),
+      crop_y_(crop_y),
+      crop_w_(crop_w),
+      crop_h_(crop_h),
+      width_(width),
+      height_(height),
+      texture_id_(0),
+      texture_target_(0),
+      timestamp_(timestamp),
+      duration_(duration) {
+  memset(&strides_, 0, sizeof(strides_));
+  memset(&data_, 0, sizeof(data_));
+}
+
+VideoFrame::VideoFrame(VideoFrame::Format format,
+                       size_t width,
+                       size_t height,
+                       base::TimeDelta timestamp,
+                       base::TimeDelta duration)
+    : format_(format),
+      crop_x_(0),
+      crop_y_(0),
+      crop_w_(width),
+      crop_h_(height),
       width_(width),
       height_(height),
       texture_id_(0),

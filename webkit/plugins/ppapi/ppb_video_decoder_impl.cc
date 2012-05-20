@@ -236,6 +236,10 @@ void PPB_VideoDecoder_Impl::PictureReady(const media::Picture& picture) {
   PP_Picture_Dev output;
   output.picture_buffer_id = picture.picture_buffer_id();
   output.bitstream_buffer_id = picture.bitstream_buffer_id();
+  output.crop_x = picture.crop_x();
+  output.crop_y = picture.crop_y();
+  output.crop_w = picture.crop_w();
+  output.crop_h = picture.crop_h();
   ppp_videodecoder_->PictureReady(pp_instance(), pp_resource(), &output);
 }
 

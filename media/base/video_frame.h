@@ -58,6 +58,10 @@ class MEDIA_EXPORT VideoFrame : public base::RefCountedThreadSafe<VideoFrame> {
   static scoped_refptr<VideoFrame> WrapNativeTexture(
       uint32 texture_id,
       uint32 texture_target,
+      size_t crop_x,
+      size_t crop_y,
+      size_t crop_w,
+      size_t crop_h,
       size_t width,
       size_t height,
       base::TimeDelta timestamp,
@@ -123,6 +127,15 @@ class MEDIA_EXPORT VideoFrame : public base::RefCountedThreadSafe<VideoFrame> {
   friend class base::RefCountedThreadSafe<VideoFrame>;
   // Clients must use the static CreateFrame() method to create a new frame.
   VideoFrame(Format format,
+             size_t crop_x,
+             size_t crop_y,
+             size_t crop_w,
+             size_t crop_h,
+             size_t video_width,
+             size_t video_height,
+             base::TimeDelta timestamp,
+             base::TimeDelta duration);
+  VideoFrame(Format format,
              size_t video_width,
              size_t video_height,
              base::TimeDelta timestamp,
@@ -138,6 +151,12 @@ class MEDIA_EXPORT VideoFrame : public base::RefCountedThreadSafe<VideoFrame> {
 
   // Frame format.
   Format format_;
+
+  // coordinates of valid pixel data within the frame:
+  size_t crop_x_;
+  size_t crop_y_;
+  size_t crop_w_;
+  size_t crop_h_;
 
   // Width and height of surface.
   size_t width_;

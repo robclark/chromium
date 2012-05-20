@@ -45,6 +45,8 @@ class MEDIA_EXPORT PictureBuffer {
 class MEDIA_EXPORT Picture {
  public:
   Picture(int32 picture_buffer_id, int32 bitstream_buffer_id);
+  Picture(int32 picture_buffer_id, int32 bitstream_buffer_id,
+    int crop_x, int crop_y, int crop_w, int crop_h);
 
   // Returns the id of the picture buffer where this picture is contained.
   int32 picture_buffer_id() const {
@@ -60,9 +62,30 @@ class MEDIA_EXPORT Picture {
     bitstream_buffer_id_ = bitstream_buffer_id;
   }
 
+  int32 crop_x() const {
+    return crop_x_;
+  }
+
+  int32 crop_y() const {
+    return crop_y_;
+  }
+
+  int32 crop_w() const {
+    return crop_w_;
+  }
+
+  int32 crop_h() const {
+    return crop_h_;
+  }
+
  private:
   int32 picture_buffer_id_;
   int32 bitstream_buffer_id_;
+  // if crop_w/crop_h are zero, it means no cropping:
+  int32 crop_x_;
+  int32 crop_y_;
+  int32 crop_w_;
+  int32 crop_h_;
 };
 
 }  // namespace media

@@ -509,9 +509,13 @@ IPC_MESSAGE_ROUTED1(AcceleratedVideoDecoderHostMsg_DismissPictureBuffer,
                     int32) /* Picture buffer ID */
 
 // Decoder reports that a picture is ready.
-IPC_MESSAGE_ROUTED2(AcceleratedVideoDecoderHostMsg_PictureReady,
+IPC_MESSAGE_ROUTED6(AcceleratedVideoDecoderHostMsg_PictureReady,
                     int32,  /* Picture buffer ID */
-                    int32)  /* Bitstream buffer ID */
+                    int32,  /* Bitstream buffer ID */
+                    int32,  /* crop_x */
+                    int32,  /* crop_y */
+                    int32,  /* crop_w */
+                    int32)  /* crop_h */
 
 // Confirm decoder has been flushed.
 IPC_MESSAGE_ROUTED0(AcceleratedVideoDecoderHostMsg_FlushDone)

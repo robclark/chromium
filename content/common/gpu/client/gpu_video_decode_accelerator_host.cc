@@ -159,11 +159,13 @@ void GpuVideoDecodeAcceleratorHost::OnDismissPictureBuffer(
 }
 
 void GpuVideoDecodeAcceleratorHost::OnPictureReady(
-    int32 picture_buffer_id, int32 bitstream_buffer_id) {
+    int32 picture_buffer_id, int32 bitstream_buffer_id,
+    int32 crop_x, int32 crop_y, int32 crop_w, int32 crop_h) {
   DCHECK(CalledOnValidThread());
   if (!client_)
     return;
-  media::Picture picture(picture_buffer_id, bitstream_buffer_id);
+  media::Picture picture(picture_buffer_id, bitstream_buffer_id,
+      crop_x, crop_y, crop_w, crop_h);
   client_->PictureReady(picture);
 }
 

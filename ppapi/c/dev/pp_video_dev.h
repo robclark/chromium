@@ -109,8 +109,17 @@ struct PP_Picture_Dev {
    * ID of the bitstream from which this data was decoded.
    */
   int32_t bitstream_buffer_id;
+  /**
+   * If crop_w/crop_h are zero, it means no cropping.
+   * crop_x, crop_y - coordinate of upper-left pixel of valid picture data
+   * crop_w, crop_h - the width/height of the cropped picture
+   */
+  int32_t crop_x;
+  int32_t crop_y;
+  int32_t crop_w;
+  int32_t crop_h;
 };
-PP_COMPILE_ASSERT_STRUCT_SIZE_IN_BYTES(PP_Picture_Dev, 8);
+PP_COMPILE_ASSERT_STRUCT_SIZE_IN_BYTES(PP_Picture_Dev, 24);
 /**
  * @}
  */
