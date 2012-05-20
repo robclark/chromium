@@ -245,6 +245,9 @@
 #define IPC_MESSAGE_ROUTED5(msg_class, type1, type2, type3, type4, type5) \
   IPC_MESSAGE_DECL(ASYNC, ROUTED, msg_class, 5, 0, (type1, type2, type3, type4, type5), ())
 
+#define IPC_MESSAGE_ROUTED6(msg_class, type1, type2, type3, type4, type5, type6) \
+  IPC_MESSAGE_DECL(ASYNC, ROUTED, msg_class, 6, 0, (type1, type2, type3, type4, type5, type6), ())
+
 #define IPC_SYNC_MESSAGE_CONTROL0_0(msg_class) \
   IPC_MESSAGE_DECL(SYNC, CONTROL, msg_class, 0, 0, (), ())
 
@@ -540,6 +543,33 @@
     *c = p.c;                                                                 \
     *d = p.d;                                                                 \
     *e = p.e;                                                                 \
+    return true;                                                              \
+  }
+#define IPC_ASYNC_MESSAGE_METHODS_6                                           \
+  IPC_ASYNC_MESSAGE_METHODS_GENERIC                                           \
+  template<class T, class S, typename TA, typename TB, typename TC,           \
+           typename TD, typename TE, typename TF>                             \
+  static bool Dispatch(const Message* msg, T* obj, S* sender,                 \
+                       void (T::*func)(const Message&, TA, TB, TC, TD, TE, TF)) { \
+    Schema::Param p;                                                          \
+    if (Read(msg, &p)) {                                                      \
+      (obj->*func)(*msg, p.a, p.b, p.c, p.d, p.e, p.f);                       \
+      return true;                                                            \
+    }                                                                         \
+    return false;                                                             \
+  }                                                                           \
+  template<typename TA, typename TB, typename TC, typename TD, typename TE, typename TF>   \
+  static bool Read(const IPC::Message* msg, TA* a, TB* b, TC* c, TD* d,       \
+                   TE* e, TF* f) {                                            \
+    Schema::Param p;                                                          \
+    if (!Read(msg, &p))                                                       \
+      return false;                                                           \
+    *a = p.a;                                                                 \
+    *b = p.b;                                                                 \
+    *c = p.c;                                                                 \
+    *d = p.d;                                                                 \
+    *e = p.e;                                                                 \
+    *f = p.f;                                                                 \
     return true;                                                              \
   }
 
@@ -843,17 +873,18 @@ LogFunctionMap g_log_function_mapping;
 // Handle variable sized argument lists.  These are usually invoked by token
 // pasting against the argument counts.
 #define IPC_TYPE_IN_0()
-#define IPC_TYPE_IN_1(t1)                   const t1& arg1
-#define IPC_TYPE_IN_2(t1, t2)               const t1& arg1, const t2& arg2
-#define IPC_TYPE_IN_3(t1, t2, t3)           const t1& arg1, const t2& arg2, const t3& arg3
-#define IPC_TYPE_IN_4(t1, t2, t3, t4)       const t1& arg1, const t2& arg2, const t3& arg3, const t4& arg4
-#define IPC_TYPE_IN_5(t1, t2, t3, t4, t5)   const t1& arg1, const t2& arg2, const t3& arg3, const t4& arg4, const t5& arg5
+#define IPC_TYPE_IN_1(t1)                   const t1& argi1
+#define IPC_TYPE_IN_2(t1, t2)               const t1& argi1, const t2& argi2
+#define IPC_TYPE_IN_3(t1, t2, t3)           const t1& argi1, const t2& argi2, const t3& argi3
+#define IPC_TYPE_IN_4(t1, t2, t3, t4)       const t1& argi1, const t2& argi2, const t3& argi3, const t4& argi4
+#define IPC_TYPE_IN_5(t1, t2, t3, t4, t5)   const t1& argi1, const t2& argi2, const t3& argi3, const t4& argi4, const t5& argi5
+#define IPC_TYPE_IN_6(t1, t2, t3, t4, t5, t6) const t1& argi1, const t2& argi2, const t3& argi3, const t4& argi4, const t5& argi5, const t6& argi6
 
 #define IPC_TYPE_OUT_0()
-#define IPC_TYPE_OUT_1(t1)                  t1* arg6
-#define IPC_TYPE_OUT_2(t1, t2)              t1* arg6, t2* arg7
-#define IPC_TYPE_OUT_3(t1, t2, t3)          t1* arg6, t2* arg7, t3* arg8
-#define IPC_TYPE_OUT_4(t1, t2, t3, t4)      t1* arg6, t2* arg7, t3* arg8, t4* arg9
+#define IPC_TYPE_OUT_1(t1)                  t1* argo1
+#define IPC_TYPE_OUT_2(t1, t2)              t1* argo1, t2* argo2
+#define IPC_TYPE_OUT_3(t1, t2, t3)          t1* argo1, t2* argo2, t3* argo3
+#define IPC_TYPE_OUT_4(t1, t2, t3, t4)      t1* argo1, t2* argo2, t3* argo3, t4* argo4
 
 #define IPC_TUPLE_IN_0()                    Tuple0
 #define IPC_TUPLE_IN_1(t1)                  Tuple1<t1>
@@ -861,6 +892,7 @@ LogFunctionMap g_log_function_mapping;
 #define IPC_TUPLE_IN_3(t1, t2, t3)          Tuple3<t1, t2, t3>
 #define IPC_TUPLE_IN_4(t1, t2, t3, t4)      Tuple4<t1, t2, t3, t4>
 #define IPC_TUPLE_IN_5(t1, t2, t3, t4, t5)  Tuple5<t1, t2, t3, t4, t5>
+#define IPC_TUPLE_IN_6(t1, t2, t3, t4, t5, t6) Tuple6<t1, t2, t3, t4, t5, t6>
 
 #define IPC_TUPLE_OUT_0()                   Tuple0
 #define IPC_TUPLE_OUT_1(t1)                 Tuple1<t1&>
@@ -869,17 +901,18 @@ LogFunctionMap g_log_function_mapping;
 #define IPC_TUPLE_OUT_4(t1, t2, t3, t4)     Tuple4<t1&, t2&, t3&, t4&>
 
 #define IPC_NAME_IN_0()                     MakeTuple()
-#define IPC_NAME_IN_1(t1)                   MakeRefTuple(arg1)
-#define IPC_NAME_IN_2(t1, t2)               MakeRefTuple(arg1, arg2)
-#define IPC_NAME_IN_3(t1, t2, t3)           MakeRefTuple(arg1, arg2, arg3)
-#define IPC_NAME_IN_4(t1, t2, t3, t4)       MakeRefTuple(arg1, arg2, arg3, arg4)
-#define IPC_NAME_IN_5(t1, t2, t3, t4, t5)   MakeRefTuple(arg1, arg2, arg3, arg4, arg5)
+#define IPC_NAME_IN_1(t1)                   MakeRefTuple(argi1)
+#define IPC_NAME_IN_2(t1, t2)               MakeRefTuple(argi1, argi2)
+#define IPC_NAME_IN_3(t1, t2, t3)           MakeRefTuple(argi1, argi2, argi3)
+#define IPC_NAME_IN_4(t1, t2, t3, t4)       MakeRefTuple(argi1, argi2, argi3, argi4)
+#define IPC_NAME_IN_5(t1, t2, t3, t4, t5)   MakeRefTuple(argi1, argi2, argi3, argi4, argi5)
+#define IPC_NAME_IN_6(t1, t2, t3, t4, t5, t6)   MakeRefTuple(argi1, argi2, argi3, argi4, argi5, argi6)
 
 #define IPC_NAME_OUT_0()                    MakeTuple()
-#define IPC_NAME_OUT_1(t1)                  MakeRefTuple(*arg6)
-#define IPC_NAME_OUT_2(t1, t2)              MakeRefTuple(*arg6, *arg7)
-#define IPC_NAME_OUT_3(t1, t2, t3)          MakeRefTuple(*arg6, *arg7, *arg8)
-#define IPC_NAME_OUT_4(t1, t2, t3, t4)      MakeRefTuple(*arg6, *arg7, *arg8, *arg9)
+#define IPC_NAME_OUT_1(t1)                  MakeRefTuple(*argo1)
+#define IPC_NAME_OUT_2(t1, t2)              MakeRefTuple(*argo1, *argo2)
+#define IPC_NAME_OUT_3(t1, t2, t3)          MakeRefTuple(*argo1, *argo2, *argo3)
+#define IPC_NAME_OUT_4(t1, t2, t3, t4)      MakeRefTuple(*argo1, *argo2, *argo3, *argo4)
 
 // There are places where the syntax requires a comma if there are input args,
 // if there are input args and output args, or if there are input args or
@@ -891,6 +924,7 @@ LogFunctionMap g_log_function_mapping;
 #define IPC_COMMA_3 ,
 #define IPC_COMMA_4 ,
 #define IPC_COMMA_5 ,
+#define IPC_COMMA_6 ,
 
 #define IPC_COMMA_AND_0(x)
 #define IPC_COMMA_AND_1(x) x

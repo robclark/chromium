@@ -626,6 +626,7 @@ class PickleCracker : public Pickle {
 #define IPC_MEMBERS_IN_3(p)                 p.a, p.b, p.c
 #define IPC_MEMBERS_IN_4(p)                 p.a, p.b, p.c, p.d
 #define IPC_MEMBERS_IN_5(p)                 p.a, p.b, p.c, p.d, p.e
+#define IPC_MEMBERS_IN_6(p)                 p.a, p.b, p.c, p.d, p.e, p.f
 
 #define IPC_MEMBERS_OUT_0()
 #define IPC_MEMBERS_OUT_1()                NULL
